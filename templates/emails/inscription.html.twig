@@ -1,0 +1,8 @@
+<h1>Votre inscription</h1>
+
+<p>Bonjour,</p>
+<p>Vous vous êtes inscrit à notre newsletter.</p>
+
+<p>Veuillez cliquer sur ce lien pour confirmer votre inscription : <a href="{{ absolute_url(path('newsletters_confirm', { id: user.id, token: token })) }}">{{ absolute_url(path('newsletters_confirm', { id: user.id, token: token })) }}</a></p>
+
+<p>PS : Si vous n'êtes pas à l'origine de cette démarche, veuillez ignorer ce mail.</p>
