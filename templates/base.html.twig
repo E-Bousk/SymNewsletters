@@ -14,6 +14,10 @@
         {% endblock %}
     </head>
     <body>
+        <a href="{{ path('newsletters_home') }}">S'abonner aux newsletters</a>
+        <br><a href="{{ path('newsletters_prepare') }}">Preparer une newsletter</a>
+        <br><a href="{{ path('newsletters_list') }}">Lister/envoyer les newsletters</a>
+        <br><a href="{{ path('newsletters_failed') }}">Gérerer les échecs d'envoi</a>
         {% block body %}{% endblock %}
     </body>
 </html>

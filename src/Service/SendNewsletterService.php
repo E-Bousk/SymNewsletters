@@ -18,7 +18,10 @@ class SendNewsletterService
 
     public function send(Users $user, Newsletters $newsletter): void
     {
-        // sleep(3); // Sert uniquement pour tester
+        /** Sert uniquement pour tester */
+        // sleep(3);
+        // throw new \Exception('- TEST : Message non envoyé TEST -');
+        
         $this->email = (new TemplatedEmail())
             ->from('newsletterq@noreply')
             ->to($user->getEmail())

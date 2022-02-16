@@ -6,8 +6,4 @@
     {% for message in app.flashes('message') %}
         <div>{{ message }}</div>
     {% endfor %}
-
-    <a href="{{ path('newsletters_home') }}">S'abonner aux newsletters</a>
-    <br><a href="{{ path('newsletters_prepare') }}">Preparer une newsletter</a>
-    <br><a href="{{ path('newsletters_list') }}">Lister les newsletters</a>
 {% endblock %}
