@@ -6,6 +6,7 @@ use App\Entity\Newsletters\Newsletters;
 use App\Entity\Newsletters\Users;
 use App\Form\NewslettersType;
 use App\Form\NewslettersUsersType;
+use App\Message\SendNewsletterMessage;
 use App\Repository\Newsletters\NewslettersRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
  * @Route("/newsletters", name="newsletters_")
@@ -118,27 +120,19 @@ class NewslettersController extends AbstractController
     /**
      * @Route("/send/{id}", name="send")
      */
-    public function send(Newsletters $newsletter, MailerInterface $mailer): Response
+    public function send(Newsletters $newsletter, MessageBusInterface $messageBusInterface): Response
     {
 
         $users = $newsletter->getCategories()->getUsers();
 
         foreach($users as $user) {
             if ($user->getIsValid()) {
-                $this->email = (new TemplatedEmail())
-                    ->from('newsletterq@noreply')
-                    ->to($user->getEmail())
-                    ->subject($newsletter->getName())
-                    ->htmlTemplate('emails/newsletter.html.twig')
-                    ->context(compact('newsletter',  'user'))
-                ;
-
-                $mailer->send($this->email);
+                $messageBusInterface->dispatch(new SendNewsletterMessage($user->getId(), $newsletter->getId()));
             }
         }
 
-        $newsletter->setIsSent(true);
-        $this->em->flush();
+        // $newsletter->setIsSent(true);
+        // $this->em->flush();
         
         return $this->redirectToRoute('newsletters_list');
     }
